@@ -17,7 +17,7 @@ Download `JsonParser.c`, `JsonParser.h`, include them in your project, done.
 
 Usage
 ====
-String values:
+* String values:
 ```
 typedef struct {
 
@@ -28,11 +28,11 @@ typedef struct {
     
 }JsonString;
 ```
-Number values:
+* Number values:
 ```
 double
 ```
-Array and Object values
+* Array and Object values
 ```
 typedef struct {
 
@@ -45,7 +45,7 @@ typedef struct {
     
 }JsonComplex;
 ```
-Boolean values:
+* Boolean values:
 ```
 unsigned char
 ```
