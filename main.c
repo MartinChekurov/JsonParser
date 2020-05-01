@@ -24,6 +24,7 @@ void test(void)
 
 void test3(void)
 {
+    JsonError status = JSON_NO_ERR;
     JsonComplex root = {0};
     root.data = "{  \"string\"  :  \"some string\",    "
                         "   \"object\"  :  {                   "
@@ -36,6 +37,12 @@ void test3(void)
                         "   ]                                  "
                         "}";
     root.len = strlen(root.data);
+
+    status = jsonCheck(&root);
+    if (status != JSON_NO_ERR) {
+        printf("\njsonCheck: %d", status);
+        return;
+    }
 
     JsonString string;
     jsonObjectGetString(&root, "string", &string);
