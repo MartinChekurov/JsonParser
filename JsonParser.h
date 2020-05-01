@@ -41,6 +41,8 @@ typedef struct {
     
 }JsonComplex;
 
+JsonError jsonCheck(JsonComplex* object);
+
 JsonError jsonObjectGetString (JsonComplex* object, char* key, JsonString* string);
 JsonError jsonObjectGetNumber (JsonComplex* object, char* key, double* number);
 JsonError jsonObjectGetObject (JsonComplex* object, char* key, JsonComplex* obj);
