@@ -27,6 +27,7 @@ typedef struct {
     char getIndex;
     char keyMatch;
     char isKey;
+    char check;
 
 }JsonParser;
 
@@ -156,6 +157,10 @@ static JsonError jsonParseObject(JsonParser* parser, unsigned char match)
         parser->out->complex.len = parser->in.data - parser->out->complex.data;
         parser->found = 1;
     }
+    if ((!parser->in.len || !*parser->in.data) && !parser->objectRecursion) {
+        //checking is successful, exit
+        parser->found = 1;
+    }
     return JSON_NO_ERR;
 }
 
@@ -264,7 +269,8 @@ static JsonError jsonParseObjectValue(JsonParser* parser, JsonString* key, JsonT
     }
     if (parser->objectRecursion == 1 &&
         jsonCompareStrings(&parser->key, key) == JSON_NO_ERR &&
-        parser->type == type) {
+        parser->type == type &&
+        !parser->check) {
         match = 1;
         parser->keyMatch = 1;
     }
@@ -700,4 +706,18 @@ JsonError jsonArrayGetBoolean(JsonComplex* object, size_t index, unsigned char* 
     }
     *boolean = value.boolean;
     return status;      
+}
+
+JsonError jsonCheck(JsonComplex* object)
+{
+    JsonParser parser = {0};
+    JsonError status = JSON_NO_ERR;
+    if (!object || !object->data || !object->len ||
+        *object->data != '{') {
+        return JSON_ERR;
+    }
+    parser.in = *object;
+    parser.wrapper = JSON_OBJECT;
+    parser.check = 1;
+    return jsonParse(&parser);    
 }
